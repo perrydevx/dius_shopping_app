@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CheckoutTest {
 
@@ -19,6 +20,15 @@ class CheckoutTest {
     public void when_no_items_then_pay_zero() {
         Checkout co = new Checkout(new OpeningDaySpecial());
         assertEquals(new BigDecimal(0).setScale(2), co.total());
+    }
+
+    @Test
+    public void when_invalid_item_then_throw_excpetion() {
+        Checkout co = new Checkout(new OpeningDaySpecial());
+        assertThrows(NullPointerException.class, () -> {
+            co.scan(new Item("invalid_item"));
+            co.total();
+        });
     }
 
     @Test
